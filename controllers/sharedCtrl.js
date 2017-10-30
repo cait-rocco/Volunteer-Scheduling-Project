@@ -1,0 +1,10 @@
+
+
+
+
+
+
+deleteVolFromEvent
+removeCharityFromUser
+getEventDetails
+getVolDetails
