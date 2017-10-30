@@ -1,0 +1,15 @@
+
+
+
+
+deleteCharity
+editCharity
+getCharityVols
+updateCharityVol
+addEvent
+updateEvent
+deleteEvent
+addEventTime
+deleteEventTime
+getCharityDetails
+getCharityEvents
