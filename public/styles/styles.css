@@ -1,0 +1,51 @@
+body {
+    list-style: none;
+ }
+ 
+ .column1 {
+     background-color: red;
+ }
+ 
+ .column2 {
+     background-color: orange;
+ }
+ 
+ .column3 {
+     background-color: blue;
+ }
+ 
+ .nav-link {
+     display: inline;
+ }
+ 
+ 
+ .singleProduct, .loginForm, .createProd, .cart {
+ 
+         position: fixed; /* or absolute */
+         top: 33%;
+         left: 33%;
+ }
+ 
+ .logout {
+ float: right;
+ }
+ 
+ .createProduct{
+     position: fixed; /* or absolute */
+     top: 33%;
+     left: 33%;
+ }
+ 
+ .productList {
+     position: fixed; /* or absolute */
+     top: 10%;
+ 
+ }
+ 
+ .productItem {
+ border: 2px solid black;
+ }
+ 
+ .hidden {
+     display:none;
+ }
