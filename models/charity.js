@@ -8,15 +8,18 @@ module.exports = (sequelize, DataTypes) => {
     zip: DataTypes.INTEGER,
     phone: DataTypes.STRING,
     donation_link: DataTypes.STRING,
-    description: DataTypes.STRING,
-    logo: DataTypes.BLOB
-  });
+    description: DataTypes.TEXT,
+    logo: DataTypes.BLOB,
+    user_type: DataTypes.BOOLEAN,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING
+  }, {timestamps: false});
 
   Charity.associate = (models) => {
-    Charity.belongsToMany(models.CharityEvent, {
+    Charity.hasMany(models.CharityEvent, {
       foreignKey: 'charity_id'
     });
-    Charity.belongsToMany(models.Volunteers, {
+    Charity.belongsToMany(models.Volunteer, {
       through: 'CharityVolunteers',
       foreignKey: 'charity_id'
     });

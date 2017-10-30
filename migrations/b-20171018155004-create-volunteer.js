@@ -16,6 +16,15 @@ module.exports = {
       },
       profile_pic: {
         type: Sequelize.BLOB
+      },
+      user_type: {
+        type: Sequelize.BOOLEAN
+      },
+      email: {
+        type: Sequelize.STRING
+      },
+      password: {
+        type: Sequelize.STRING
       }
     });
   },

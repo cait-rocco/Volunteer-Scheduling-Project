@@ -1,13 +1,42 @@
 {
     "charityEvents": [
       {
-        "charity_id": "1",
+        "charity_id": 1,
         "name": "1",
         "street_address": "Pro",
         "city": "2006-04-25T23:59:03.244Z",
         "state": "Pro",
-        "zip": "37205",
-        "phone": "Pro",
+        "zip": 37205,
+        "description": "Pro",
+        "date": "2006-04-25T23:59:03.244Z"
+      },
+      {
+        "charity_id": 1,
+        "name": "1",
+        "street_address": "Pro",
+        "city": "2006-04-25T23:59:03.244Z",
+        "state": "Pro",
+        "zip": 37205,
+        "description": "Pro",
+        "date": "2006-04-25T23:59:03.244Z"
+      },
+      {
+        "charity_id": 4,
+        "name": "1",
+        "street_address": "Pro",
+        "city": "2006-04-25T23:59:03.244Z",
+        "state": "Pro",
+        "zip": 37205,
+        "description": "Pro",
+        "date": "2006-04-25T23:59:03.244Z"
+      },
+      {
+        "charity_id": 2,
+        "name": "1",
+        "street_address": "Pro",
+        "city": "2006-04-25T23:59:03.244Z",
+        "state": "Pro",
+        "zip": 37205,
         "description": "Pro",
         "date": "2006-04-25T23:59:03.244Z"
       }

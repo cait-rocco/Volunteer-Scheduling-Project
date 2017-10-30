@@ -1,24 +1,15 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('CharityEvents', {
+    return queryInterface.createTable('Charities', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      charity_id: {
-        type: Sequelize.INTEGER
-      },
       name: {
         type: Sequelize.STRING
-      },
-      description: {
-        type: Sequelize.STRING
-      },
-      date: {
-        type: Sequelize.DATE
       },
       street_address: {
         type: Sequelize.STRING
@@ -31,10 +22,31 @@ module.exports = {
       },
       zip: {
         type: Sequelize.INTEGER
+      },
+      phone: {
+        type: Sequelize.STRING
+      },
+      donation_link: {
+        type: Sequelize.STRING
+      },
+      description: {
+        type: Sequelize.TEXT
+      },
+      logo: {
+        type: Sequelize.BLOB
+      },
+      user_type: {
+        type: Sequelize.BOOLEAN
+      },
+      email: {
+        type: Sequelize.STRING
+      },
+      password: {
+        type: Sequelize.STRING
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('CharityEvents');
+    return queryInterface.dropTable('Charities');
   }
 };

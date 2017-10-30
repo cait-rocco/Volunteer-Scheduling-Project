@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('EmployeeComputers',{
+    return queryInterface.createTable('CharityVolunteers',{
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -29,27 +29,19 @@ module.exports = {
         onUpdate:'cascade',
         onDelete:'cascade'
       },
-      time: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      position: {
-        allowNull: false,
-        type: Sequelize.STRING
+      application: {
+        allowNull: true,
+        type: Sequelize.BLOB
       },
       status: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN
-      },
-      vols_needed: {
         allowNull: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       }
 
     })
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('EventVolunteers')
+    return queryInterface.dropTable('CharityVolunteers')
   }
 };

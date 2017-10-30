@@ -2,33 +2,39 @@
     "charityVolunteers": [
       {
         "application": "file to upload",
-        "volunteer_id": "1",
-        "charity_id": "1"
+        "volunteer_id": 1,
+        "charity_id": 1,
+        "status": "approved"
       },
       {
         "application": "file to upload",
-        "volunteer_id": "1",
-        "charity_id": "2"
+        "volunteer_id": 1,
+        "charity_id": 2,
+        "status": "pending"
       },
       {
         "application": "file to upload",
-        "volunteer_id": "1",
-        "charity_id": "3"
+        "volunteer_id": 1,
+        "charity_id": 3,
+        "status": "approved"
       },
       {
         "application": "file to upload",
-        "volunteer_id": "2",
-        "charity_id": "4"
+        "volunteer_id": 2,
+        "charity_id": 1,
+        "status": "approved"
       },
       {
         "application": null,
-        "volunteer_id": "2",
-        "charity_id": "2"
+        "volunteer_id": 2,
+        "charity_id": 4,
+        "status": "approved"
       },
       {
         "application": "file to upload",
-        "volunteer_id": "3",
-        "charity_id": "4"
+        "volunteer_id": 3,
+        "charity_id": 4,
+        "status": "approved"
       }
     ]
   }
