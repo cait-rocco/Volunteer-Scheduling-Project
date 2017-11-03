@@ -2,17 +2,17 @@
 
 
 //CHARITIES
-// getCharityVols
+// getCharityVols*
 // updateCharityVol
 // updateEvent
 // deleteEvent
-// addEventTime
+// addEventTime*
 // deleteEventTime
 
 //VOLUNTEERS
 
-// getUserCharities
-// getUsersEvents
+// getUserCharities*
+// getUsersEvents*
 // addVolToEvent
 
 //BOTH
@@ -20,6 +20,8 @@
 // editUser
 // deleteVolFromEvent
 // removeCharityFromUser
+
+// ?
 // getEventDetails //including volunteers but only show these in the charity's view
 // getVolDetails
 
@@ -118,44 +120,13 @@ module.exports.getUserDetails = (req, res, next) => {
     });
   };
 
-//   module.exports.addCharityToUser = (req, res, next) => {
-//     const { CharityVolunteer } = req.app.get('models');
-//     CharityVolunteer.create({
-//         charity_id: req.body.charity_id,
-//         volunteer_id: req.session.passport.user.id,
-//         application: null,
-//         status: null,
-//     })
-//     .then( (result) => {
-//         next();
-//     })
-//     .catch( (err) => {
-//         res.status(500).json(err)
-//     })
-//   };
-
-//   module.exports.addCharityToUser = (req, res, next) => {
-//     const { User } = req.app.get('models');
-//     User.findAll()
-//       .then(users => {
-        
-//         User.findById(req.body.charity_id)
-//         .then(charity => {
-//             charity.addUser(req.session.passport.user.id);
-//             res.redirect('/charity-view');
-//         });
-       
-//       })
-//       .catch(err => {
-//         next(err);
-//       });
-//   };
-
 module.exports.addCharityToUser = (req, res, next) => {
+    console.log("id?", req.body.charity_id);
     const { User } = req.app.get('models');
     User.findById(req.session.passport.user.id)
         .then((volunteer)=>{
-            return volunteer.addUsers(req.body.charity_id)
+            console.log("volunteer", volunteer);
+            return volunteer.addVolunteer(req.body.charity_id)
         })
         .then((data)=>{
             res.redirect(`/user-details`);

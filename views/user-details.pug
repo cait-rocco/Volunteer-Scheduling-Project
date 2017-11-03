@@ -9,7 +9,7 @@ block content
             button(type="button" data-toggle="modal" data-target="#addEvent") +
             ul Events
                 each event in CharityEvent
-                        li: a(data-toggle="modal" data-target="#viewEvent" data-id= event.dataValues.id)  #{event.dataValues.name}
+                    li: a(data-toggle="modal" data-target="#viewEvent" data-id= event.dataValues.id)  #{event.dataValues.name}
                                 
                         //- form(method='POST' action='user?_method=DELETE')
                         //-     input(type='hidden', name='id',  value=`${payment.dataValues.id}`)
@@ -18,9 +18,14 @@ block content
             ul Volunteers
                 //- each volunteer in CharityVolunteer
                     li #{volunteer.dataValues.first_name} #{volunteer.dataValues.last_name}
+
             
         else
             p #{entity.first_name} #{entity.last_name} <br>Phone: #{entity.phone}<br>Email: #{entity.email}
+
+            ul Nonprofits
+                //- each nonprofit in CharityVolunteer
+                    li #{nonprofit.dataValues.name}
 
     
     div(class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="addEvent" aria-hidden="true")        
@@ -28,7 +33,7 @@ block content
             div(class="modal-content")
                 div(class="modal-body")
                     p Add an Event
-                    form(action="/user-details", method="POST")
+                    form(action="/user-details/event", method="POST")
                         input(type="text" placeholder="Event Name" name="name")
                         <br>
                         input(type="text" placeholder="Street Address" name="street_address")
@@ -41,9 +46,16 @@ block content
                         <br>
                         input(type="text" placeholder="description" name="description")
                         <br>
-                        //- input(type="blob" placeholder="logo file" name="google_map")
-                        //- <br>
                         input(type="date" placeholder="date" name="date")
+                        <br>
+                        //-     form.addTime(action="user-details", method="POST")
+                        //-         input(type="text" placeholder="time" name="date")
+                        //-         <br>
+                        //-         input(type="text" placeholder="job_description" name="position")
+                        //-         <br>
+                        //-         button(type="submit") Add Time
+                        //- each position in EventVolunteer
+                        //-     li  #{position.dataValues.time} #{position.dataValues.position}
                         button(type="submit") Submit
                 div(class="modal-footer")
                     button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
@@ -63,7 +75,7 @@ block content
                             <br>
                             p #{event.dataValues.street_address}
                             <br>
-                            p #{event.dataValues.city}, #{event.dataValues.name} #{event.dataValues.name}
+                            p #{event.dataValues.city}, #{event.dataValues.state} #{event.dataValues.zip}
                             <br>
                             p #{event.dataValues.description}
                         //- ul

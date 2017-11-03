@@ -8,7 +8,7 @@ const { getCharityVols, viewCharity, updateCharityVol, postEvent, updateEvent, d
 //CHARITY
 // router.get('/charity/:id', getCharityVols);
 // router.patch('/charity/:id', updateCharityVol);
-router.post('/user-details', postEvent, getUserDetails);
+router.post('/user-details/event', postEvent, getUserDetails);
 // router.put('/charity/:id', updateEvent);
 // router.delete('/charity/:id', deleteEvent);
 // router.post('/charity/:id', addEventTime);
