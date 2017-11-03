@@ -21,3 +21,14 @@
 //     $("#addToCart").addClass("hidden");
 //     alert("Product Added to Cart.")
 //   });
+
+$('#viewEvent').on('show.bs.modal', function (event) {
+    var link = $(event.relatedTarget)
+    var recipient = link.data('id') 
+    var modal = $(this)
+    $(".event-"+recipient).removeClass("isHidden")
+  })
+  
+  $('#viewEvent').on('hidden.bs.modal', function (e) {
+    $(".modalEvent").addClass("isHidden")
+  })

@@ -1,15 +1,19 @@
 doctype html
 html
   head
-    title Bangazon!
+    title Good Deed
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous")
-    link(rel="stylesheet" href="/styles/styles.css")
+    link(rel="stylesheet" href="/public/styles/styles.css")
   body
-    include partials/nav.pug
-    //- h1 Bangazon!
     //- h2 #{globalWow}
+    include nav.pug 
+    h1 <br> Good Deed
+    block content
+    
 
-  block content
 
-  script
-    include ../client/client.js
+    script(src="/public/jquery/dist/jquery.min.js")
+    script(src="/public/popper.js/dist/umd/popper.js")
+    script(src="/public/bootstrap/dist/js/bootstrap.min.js")
+    script(src="/public/main.js")
+    

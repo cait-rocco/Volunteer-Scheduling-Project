@@ -1,0 +1,7 @@
+extends index.pug
+
+block content
+
+    ul All Charities
+        each charity in nonprofits
+            li: a(class="seemore" href='/charity-view/'+charity.id)  #{charity.name}

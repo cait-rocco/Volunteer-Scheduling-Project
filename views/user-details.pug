@@ -1,0 +1,73 @@
+extends index.pug
+
+block content
+
+    .createProd
+        if session.passport.user.user_type===true
+            p #{entity.name}<br>#{entity.street_address}<br>#{entity.city}, #{entity.state} #{entity.zip}<br>Phone: #{entity.phone}<br>Email: #{entity.email}<br>Donate: #{entity.donation_link}<br>#{entity.description}
+
+            button(type="button" data-toggle="modal" data-target="#addEvent") +
+            ul Events
+                each event in CharityEvent
+                        li: a(data-toggle="modal" data-target="#viewEvent" data-id= event.dataValues.id)  #{event.dataValues.name}
+                                
+                        //- form(method='POST' action='user?_method=DELETE')
+                        //-     input(type='hidden', name='id',  value=`${payment.dataValues.id}`)
+                        //-     button(type='submit') X
+            
+            ul Volunteers
+                //- each volunteer in CharityVolunteer
+                    li #{volunteer.dataValues.first_name} #{volunteer.dataValues.last_name}
+            
+        else
+            p #{entity.first_name} #{entity.last_name} <br>Phone: #{entity.phone}<br>Email: #{entity.email}
+
+    
+    div(class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="addEvent" aria-hidden="true")        
+        div(class="modal-dialog" role="document")
+            div(class="modal-content")
+                div(class="modal-body")
+                    p Add an Event
+                    form(action="/user-details", method="POST")
+                        input(type="text" placeholder="Event Name" name="name")
+                        <br>
+                        input(type="text" placeholder="Street Address" name="street_address")
+                        <br>
+                        input(type="text" placeholder="city" name="city")
+                        <br>
+                        input(type="text" placeholder="state" name="state")
+                        <br>
+                        input(type="number" placeholder="zip" name="zip")
+                        <br>
+                        input(type="text" placeholder="description" name="description")
+                        <br>
+                        //- input(type="blob" placeholder="logo file" name="google_map")
+                        //- <br>
+                        input(type="date" placeholder="date" name="date")
+                        button(type="submit") Submit
+                div(class="modal-footer")
+                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
+
+    div(class="modal fade" id="viewEvent" tabindex="-1" role="dialog" aria-labelledby="viewEvent" aria-hidden="true")        
+        div(class="modal-dialog" role="document")
+            div(class="modal-content")
+                div(class="modal-body")
+                    
+                    input(type="text" id="eventId" name="eventId" value='')
+                    p Event Details
+                    each event in CharityEvent
+                        div.isHidden.modalEvent(class="event-"+event.dataValues.id)
+                            p #{event.dataValues.name}
+                            <br>
+                            p #{event.dataValues.date}
+                            <br>
+                            p #{event.dataValues.street_address}
+                            <br>
+                            p #{event.dataValues.city}, #{event.dataValues.name} #{event.dataValues.name}
+                            <br>
+                            p #{event.dataValues.description}
+                        //- ul
+                            each vol in event.EventVolunteer
+                                li name #{vol.event.name}
+                div(class="modal-footer")
+                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Close

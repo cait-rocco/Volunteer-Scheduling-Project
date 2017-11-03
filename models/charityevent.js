@@ -12,9 +12,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {timestamps: false});
   
     CharityEvent.associate = (models) => {
-      CharityEvent.belongsTo(models.Charity, {
+      CharityEvent.belongsTo(models.User, {
         foreignKey: 'charity_id'
       });
     };
+
   return CharityEvent;
 };
