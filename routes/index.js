@@ -8,8 +8,7 @@ router.get('/', (req, res, next) => {
 });
 
 // pipe all other requests through the route modules
-router.use(require('./charityRoute'));
-router.use(require('./volunteerRoute'));
+router.use(require('./userRoute'));
 router.use(require('./authRoute'));
 
 module.exports = router;

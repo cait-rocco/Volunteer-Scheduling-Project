@@ -1,0 +1,16 @@
+extends index.pug
+
+block content
+
+    h3 #{entity.name}
+    
+    form(action="/charity-view", method="POST")
+        input(type="hidden" placeholder="charity_id" name="charity_id" value=entity.id)
+        button(type="submit") Follow this organization
+
+
+    h4 #{entity.description}<br><br> #{entity.donation_link}
+
+    ul Events
+                each event in CharityEvent
+                    li #{event.dataValues.name}

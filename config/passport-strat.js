@@ -50,7 +50,7 @@ const RegistrationStrategy = new Strategy(
             {
               email,
               password: userPassword,
-              username: req.body.username,
+              name: req.body.name,
               first_name: req.body.first_name,
               last_name:  req.body.last_name,
               phone: req.body.phone,
@@ -58,8 +58,11 @@ const RegistrationStrategy = new Strategy(
               city: req.body.city,
               state: req.body.state,
               zip: req.body.zip,
-              start_date: null,
-              last_login: null 
+              phone: req.body.phone,
+              donation_link: req.body.donation_link,
+              description: req.body.description,
+              picture: req.body.picture,
+              user_type: req.body.user_type 
             };
           // create() is a Sequelize method
           User.create(data).then( (newUser, created) => {

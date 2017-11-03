@@ -1,24 +1,70 @@
-
 extends index.pug
 
 block content
 
- div(class="loginForm")
-    h1(class="loginHeader") Welcome to Bangazon!   
-    form(action="/register", method="post")
-      input(type="text" placeholder="First Name" name="first_name")
-      input(type="text" placeholder="Last Name" name="last_name")
-      <br>
-      input(type="text" placeholder="Street Address" name="street_address")
-      input(type="text" placeholder="city" name="city")
-      <br>
-      input(type="text" placeholder="state" name="state")
-      input(type="number" placeholder="zip" name="zip")
-      <br>
-      input(type="text" placeholder="phone number" name="phone")
-      input(type="email" placeholder="email" name="email")
-      <br>
-      input(type="password" placeholder="Password" name="password")
-      input(type="password" placeholder="Confirm Password" name="confirmation")
-      <br>
-      button(type="submit") Register
+    div(class="loginForm")
+        h1(class="loginHeader") Do a Good Deed! 
+        h4 Register as a:
+        form  
+            input(type="radio" data-toggle="modal" data-target="#registerNonprofit") 
+            | Nonprofit 
+            input(type="radio" data-toggle="modal" data-target="#registerVolunteer") 
+            | Volunteer
+                    
+    div(class="modal fade" id="registerNonprofit" tabindex="-1" role="dialog" aria-labelledby="registerNonprofit" aria-hidden="true")        
+        div(class="modal-dialog" role="document")
+            div(class="modal-content")
+                div(class="modal-body")
+                    p Register as a Nonprofit
+                    form(action="/register", method="POST")
+                        input(type="text" placeholder="Non-profit Name" name="name")
+                        <br>
+                        input(type="text" placeholder="Street Address" name="street_address")
+                        <br>
+                        input(type="text" placeholder="city" name="city")
+                        <br>
+                        input(type="text" placeholder="state" name="state")
+                        <br>
+                        input(type="number" placeholder="zip" name="zip")
+                        <br>
+                        input(type="text" placeholder="phone number" name="phone")
+                        <br>
+                        input(type="text" placeholder="description" name="description")
+                        <br>
+                        //- input(type="blob" placeholder="logo file" name="picture")
+                        //- <br>
+                        input(type="email" placeholder="email" name="email")
+                        <br>
+                        input(type="password" placeholder="Password" name="password")
+                        <br>
+                        input(type="password" placeholder="Confirm Password" name="confirmation")
+                        input(type='hidden', name='user_type'  value="true")
+                        <br>
+                        button(type="submit") Submit
+                div(class="modal-footer")
+                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
+
+    div(class="modal fade" id="registerVolunteer" tabindex="-1" role="dialog" aria-labelledby="registerVolunteer" aria-hidden="true")        
+        div(class="modal-dialog" role="document")
+            div(class="modal-content")
+                div(class="modal-body")
+                    p Register as a Volunteer
+                    form(action="/register", method="post")
+                        input(type="text" placeholder="First Name" name="first_name")
+                        <br>
+                        input(type="text" placeholder="Last Name" name="last_name")
+                        <br>
+                        input(type="text" placeholder="phone number" name="phone")
+                        <br>
+                        //- input(type="blob" placeholder="logo file" name="picture")
+                        //- <br>
+                        input(type="email" placeholder="email" name="email")
+                        <br>
+                        input(type="password" placeholder="Password" name="password")
+                        <br>
+                        input(type="password" placeholder="Confirm Password" name="confirmation")
+                        <br>
+                        input(type='hidden', name='user_type'  value="false")
+                        button(type="submit") Submit
+                div(class="modal-footer")
+                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel

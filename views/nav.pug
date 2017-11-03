@@ -1,24 +1,20 @@
-extends index.pug
-
-block content
-
-    div(class="row")
-        nav(class="nav navbar fixed-top")
-            div(class="col-md-4")
-                    a(class="nav-link active" href="/categories") Categories
-                    a(class="nav-link" href="/products") All Products
-            div(class="col-md-4")
-                    form(method='GET', action=`/products`, )
-                        input(type="text" placeholder="Search for a product" name="search" required)
-                        button(class="nav-link" formaction="/products" type="submit") SEARCH
-            div(class="col-md-4")
-                if !session.passport
-                    a(class="nav-link active" href="/login") Login
-                    a(class="nav-link active" href="/register") Register
-                if session.passport
-                    a(class="nav-link" href="/order") View Cart
-                    a(class="nav-link active" href="products/create") Sell
-                    a(class='nav-link' href='user') My Account
+div(class="row")
+    nav(class="nav navbar fixed-top")
+        div(class="col-md-4")
+                a(class="nav-link active" href="/charities") All Charities
+        div(class="col-md-4")
+                form(method='GET', action=`/charities`, )
+                    input(type="text" placeholder="Search for a non-profit" name="search" required)
+                    button(class="nav-link" formaction="/charities" type="submit") SEARCH
+        div(class="col-md-4")
+            if !session.passport
+                a(class="nav-link active" href="/login") Login
+                a(class="nav-link active" href="/register") Register
+            if session.passport
+                a(class="nav-link" href="/user-details") My Account
+                if session.passport.user.user_type===true
+                    span Welcome, #{session.passport.user.name}!
+                else
                     span Welcome, #{session.passport.user.first_name}!
-                    form(method="POST")
-                        button(class="logout" type="submit" formaction="/logout") logout
+                form(method="POST")
+                    button(class="logout" type="submit" formaction="/logout") logout

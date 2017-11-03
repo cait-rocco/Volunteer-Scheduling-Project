@@ -12,7 +12,7 @@ require('dotenv').config();
 const port = process.env.PORT || 4000;
 
 app.use(methodOverride('_method')); //method override for use with forms
-app.use(express.static(__dirname + '/public'));//give access to public folder (styles and jquery)
+app.use('/public', express.static(__dirname + '/public'));//give access to public folder (styles and jquery)
 
 
 // using require('./models') to get the models may create more than one connection to the database. To avoid that, the models variable must be somehow singleton-esque. This can be achieved by attaching the models module to the application:
