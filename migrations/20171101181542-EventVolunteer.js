@@ -19,11 +19,11 @@ module.exports = {
         onUpdate:'cascade',
         onDelete:'cascade'
       },
-      charity_volunteer_id:{
+      volunteer_id:{
         type:Sequelize.INTEGER,
         allowNull:false,
         references:{
-          model:'CharityVolunteers',
+          model:'Users',
           key:'id'
         },
         onUpdate:'cascade',

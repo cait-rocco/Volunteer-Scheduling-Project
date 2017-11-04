@@ -2,7 +2,7 @@
     "eventVolunteers": [
       {
         "time": "1",
-        "charity_volunteer_id": 1,
+        "volunteer_id": 1,
         "charity_event_id": 1,
         "position": "1",
         "status": true,
