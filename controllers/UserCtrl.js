@@ -2,16 +2,12 @@
 
 
 //CHARITIES
-// getCharityVols*
 // updateCharityVol
 // updateEvent
 // deleteEvent
-// addEventTime*
 // deleteEventTime
 
 //VOLUNTEERS
-
-// getUserCharities*
 // getUsersEvents*
 // addVolToEvent
 
@@ -26,7 +22,7 @@
 // getVolDetails
 
 module.exports.getUserDetails = (req, res, next) => {
-    const { User, CharityEvent, CharityVolunteer, EventVolunteer } = req.app.get('models');
+    const { User, CharityEvent } = req.app.get('models');
     User.findAll(
       {
         include: [{
@@ -38,10 +34,7 @@ module.exports.getUserDetails = (req, res, next) => {
       }) 
     .then( (user) => {
         let entity = user[0].dataValues
-        res.render('user-details', {entity, 
-            CharityEvent: entity.CharityEvents, 
-            CharityVolunteer: entity.CharityVolunteers, 
-            EventVolunteer: entity.EventVolunteers});
+        res.render('user-details', {entity});
     })
     .catch( (err) => {
       next(err); 
@@ -68,6 +61,21 @@ module.exports.getUserDetails = (req, res, next) => {
     })
   };
 
+  module.exports.postEventVolunteer = (req, res, next) => {
+    const { CharityEvent } = req.app.get('models');
+    CharityEvent.findById(req.body.eventId)
+        .then((event)=>{
+            console.log("event", event.dataValues);
+            return event.addTime(0)
+        })
+        .then((data)=>{
+            next();
+        })
+        .catch( (err) => {
+            res.status(500).json(err)
+        });
+}
+
   module.exports.getAllCharities = (req, res, next) => {
     const {User} = req.app.get('models');
     if (req.query.search === undefined || req.query.search === null){//if no search terms, get all
@@ -86,7 +94,6 @@ module.exports.getUserDetails = (req, res, next) => {
     else {//if search terms entered, filter down by term entered in search bar
         User.findAll({Where: {search: req.query.search, user_type: true}})
         .then( (nonprofits) => {
-            console.log("nonprofits?", nonprofits);
             let list = nonprofits.filter( (charity) => {
                 let name = charity.dataValues.name.toLowerCase();//toLowerCase makes sure the terms match accurately
                 let searchName = req.query.search.toLowerCase();
@@ -121,11 +128,9 @@ module.exports.getUserDetails = (req, res, next) => {
   };
 
 module.exports.addCharityToUser = (req, res, next) => {
-    console.log("id?", req.body.charity_id);
     const { User } = req.app.get('models');
     User.findById(req.session.passport.user.id)
         .then((volunteer)=>{
-            console.log("volunteer", volunteer);
             return volunteer.addVolunteer(req.body.charity_id)
         })
         .then((data)=>{

@@ -18,8 +18,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {timestamps: false});
 
   User.associate = (models) => {
-    User.hasMany(models.CharityEvent, {
-      foreignKey: 'charity_id'
+    User.belongsToMany(models.CharityEvent, {
+      through: 'EventVolunteers',
+      foreignKey: 'volunteer_id'
     });
     User.belongsToMany(models.User, {
       through: 'CharityVolunteers',

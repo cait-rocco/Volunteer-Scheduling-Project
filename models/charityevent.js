@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
   
     CharityEvent.associate = (models) => {
       CharityEvent.belongsTo(models.User, {
-        foreignKey: 'charity_id'
+        through: 'EventVolunteers',
+        foreignKey: 'charity_event_id',
       });
     };
 

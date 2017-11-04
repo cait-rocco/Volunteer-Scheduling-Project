@@ -3,7 +3,7 @@
 const { Router } = require('express');
 const router = Router();
 
-const { getCharityVols, viewCharity, updateCharityVol, postEvent, updateEvent, deleteEvent, addEventTime, deleteEventTime, getCharityEvents, getAllCharities, getUserCharities, removeCharityFromUser, addCharityToUser, getUsersEvents, addVolToEvent, getUserDetails, deleteUser, editUser, deleteVolFromEvent, getEventDetails } = require('../controllers/userCtrl');
+const { getCharityVols, viewCharity, updateCharityVol, postEvent, updateEvent, deleteEvent, postEventVolunteer, deleteEventTime, getCharityEvents, getAllCharities, getUserCharities, removeCharityFromUser, addCharityToUser, getUsersEvents, addVolToEvent, getUserDetails, deleteUser, editUser, deleteVolFromEvent, getEventDetails } = require('../controllers/userCtrl');
 
 //CHARITY
 // router.get('/charity/:id', getCharityVols);
@@ -11,7 +11,7 @@ const { getCharityVols, viewCharity, updateCharityVol, postEvent, updateEvent, d
 router.post('/user-details/event', postEvent, getUserDetails);
 // router.put('/charity/:id', updateEvent);
 // router.delete('/charity/:id', deleteEvent);
-// router.post('/charity/:id', addEventTime);
+router.post('/user-details/time', postEventVolunteer, getUserDetails);
 // router.delete('/charity/:id', deleteEventTime);
 // router.get('/charity/:id', getCharityEvents);
 
