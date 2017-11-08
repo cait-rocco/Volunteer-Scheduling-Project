@@ -1,12 +1,8 @@
 {
     "eventVolunteers": [
       {
-        "time": "1",
         "volunteer_id": 1,
-        "charity_event_id": 1,
-        "position": "1",
-        "status": true,
-        "vols_needed": "1"
+        "event_time_id": 1
       }
     ]
   }

@@ -32,3 +32,14 @@ $('#viewEvent').on('show.bs.modal', function (event) {
   $('#viewEvent').on('hidden.bs.modal', function (e) {
     $(".modalEvent").addClass("isHidden")
   })
+
+  $('#viewVol').on('show.bs.modal', function (volunteer) {
+    var link = $(volunteer.relatedTarget)
+    var recipient = link.data('id') 
+    var modal = $(this)
+    $(".event-"+recipient).removeClass("isHidden")
+  })
+  
+  $('#viewVol').on('hidden.bs.modal', function (e) {
+    $(".modalEvent").addClass("isHidden")
+  })

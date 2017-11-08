@@ -12,5 +12,32 @@ block content
     h4 #{entity.description}<br><br> #{entity.donation_link}
 
     ul Events
-                each event in CharityEvent
-                    li #{event.dataValues.name}
+                each event in entity.CharityEvents
+                    li: a(data-toggle="modal" data-target="#viewEvent" data-id= event.id) #{event.name}
+
+    div(class="modal fade" id="viewEvent" tabindex="-1" role="dialog" aria-labelledby="viewEvent" aria-hidden="true")        
+        div(class="modal-dialog" role="document")
+            div(class="modal-content")
+                div(class="modal-body")
+                    p Event Details
+                    each event in entity.CharityEvents
+                        div.isHidden.modalEvent(class="event-"+event.id)
+                            p #{event.name}
+                            <br>
+                            p #{event.date}
+                            <br>
+                            p #{event.street_address}
+                            <br>
+                            p #{event.city}, #{event.state} #{event.zip}
+                            <br>
+                            p #{event.description}
+                            <br>
+                            input(type="hidden" name="eventId" value=event.id )
+                            each time in eventTimes
+                                if event.id===time.charity_event_id
+                                    form.addTime(action="/charity-view/time", method="POST")
+                                        input(type="hidden" name="timeId" value=time.id )
+                                        p #{time.time} #{time.position}
+                                        button(type="submit") Volunteer!
+                div(class="modal-footer")
+                    button(type="button" class="btn btn-secondary" data-dismiss="modal") Close

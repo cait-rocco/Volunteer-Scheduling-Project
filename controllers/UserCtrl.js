@@ -1,19 +1,12 @@
 'use strict'
 
-
 //CHARITIES
 // updateCharityVol
 // updateEvent
 // deleteEvent
 // deleteEventTime
 
-//VOLUNTEERS
-// getUsersEvents*
-// addVolToEvent
-
 //BOTH
-// deleteUser
-// editUser
 // deleteVolFromEvent
 // removeCharityFromUser
 
@@ -22,19 +15,30 @@
 // getVolDetails
 
 module.exports.getUserDetails = (req, res, next) => {
-    const { User, CharityEvent } = req.app.get('models');
+    const { User, CharityEvent, EventTimes } = req.app.get('models');
     User.findAll(
       {
         include: [{
           all: true
-        }],
+        }]
+        ,
         where: {
             id: req.session.passport.user.id
         }
       }) 
     .then( (user) => {
+        console.log("user", user)
         let entity = user[0].dataValues
-        res.render('user-details', {entity});
+        EventTimes.findAll()
+        .then( (eventTimes) => {
+            CharityEvent.findAll()
+            .then((event1) => {
+                User.findAll()
+                .then((volunteer) => {
+                    res.render('user-details', { entity, eventTimes, event1, volunteer });
+                })
+            })
+        });
     })
     .catch( (err) => {
       next(err); 
@@ -61,20 +65,21 @@ module.exports.getUserDetails = (req, res, next) => {
     })
   };
 
-  module.exports.postEventVolunteer = (req, res, next) => {
-    const { CharityEvent } = req.app.get('models');
-    CharityEvent.findById(req.body.eventId)
-        .then((event)=>{
-            console.log("event", event.dataValues);
-            return event.addTime(0)
-        })
-        .then((data)=>{
-            next();
-        })
-        .catch( (err) => {
-            res.status(500).json(err)
-        });
-}
+  module.exports.postEventTime = (req, res, next) => {
+    const { EventTimes } = req.app.get('models');
+    EventTimes.create({
+        charity_event_id: req.body.eventId,
+        time: req.body.time,
+        position: req.body.position,
+        vols_needed: req.body.vols_needed
+    })
+    .then( (result) => {
+        next();
+    })
+    .catch( (err) => {
+        res.status(500).json(err)
+    })
+  };
 
   module.exports.getAllCharities = (req, res, next) => {
     const {User} = req.app.get('models');
@@ -107,20 +112,25 @@ module.exports.getUserDetails = (req, res, next) => {
   };
 
   module.exports.viewCharity = (req, res, next) => {
-    const { User, CharityEvent } = req.app.get('models');
+    const { User, CharityEvent, EventTimes } = req.app.get('models');
     User.findAll(
       {
         include: [{
-          all: true
+          model: EventTimes, where: {charity_event_id: 5},
+        }],
+        include: [{
+            all: true
         }],
         where: {
-            id: req.params.id
+            id: req.params.id,
         }
       }) 
     .then( (user) => {
         let entity = user[0].dataValues
-        res.render('charity-view', {entity, 
-            CharityEvent: entity.CharityEvents});
+        EventTimes.findAll()
+        .then( (eventTimes) => {
+            res.render('charity-view', { entity, eventTimes });
+        });
     })
     .catch( (err) => {
       next(err); 
@@ -140,3 +150,86 @@ module.exports.addCharityToUser = (req, res, next) => {
             res.status(500).json(err)
         });
 }
+
+module.exports.addEventVolunteer = (req, res, next) => {
+    const { EventTimes } = req.app.get('models');
+    EventTimes.findById(req.body.timeId)
+        .then((volunteer)=>{
+            return volunteer.addTimes(req.session.passport.user.id)
+        })
+        .then((data)=>{
+            res.redirect(`/user-details`);
+        })
+        .catch( (err) => {
+            res.status(500).json(err)
+        });
+}
+
+module.exports.editUser = (req, res, next) => {
+    const { User } = req.app.get('models');
+    User.update({
+        email: req.body.email,
+        password: req.body.password,
+        name: req.body.name,
+        first_name: req.body.first_name,
+        last_name:  req.body.last_name,
+        phone: req.body.phone,
+        street_address: req.body.street_address,
+        city: req.body.city,
+        state: req.body.state,
+        zip: req.body.zip,
+        phone: req.body.phone,
+        donation_link: req.body.donation_link,
+        description: req.body.description,
+        picture: req.body.picture,
+    }, {where:{id: req.session.passport.user.id}}).then(function(user){
+      res.status(200).send();
+      res.redirect(`/user-details`);
+    })
+    .catch( (err) => {
+      next(err);
+    });
+  };
+
+  module.exports.updateEvent = (req, res, next) => {
+    const { CharityEvent } = req.app.get('models');
+    CharityEvent.update({
+        name: req.body.name,
+        date: req.body.date,
+        street_address: req.body.street_address,
+        city: req.body.city,
+        state: req.body.state,
+        zip: req.body.zip,
+        description: req.body.description
+    }, {where:{id: req.body.id}}).then(function(event){
+    //   res.status(200).send();
+      res.redirect(`/user-details`);
+    })
+    .catch( (err) => {
+      next(err);
+    });
+  };
+
+  module.exports.deleteEvent = (req, res, next) => {
+    const { CharityEvent } = req.app.get('models');
+    CharityEvent.destroy({
+      where: {
+        id: req.body.id,
+      }
+    })
+    .then((result) => {
+      res.redirect('/user-details');
+    })
+  }
+
+  module.exports.deleteUser = (req, res, next) => {
+    const { User } = req.app.get('models');
+    User.destroy({
+      where: {
+        id: req.session.passport.user.id,
+      }
+    })
+    .then((result) => {
+      res.redirect('/');
+    })
+  }

@@ -12,10 +12,14 @@ module.exports = (sequelize, DataTypes) => {
   }, {timestamps: false});
   
     CharityEvent.associate = (models) => {
-      CharityEvent.belongsTo(models.User, {
-        through: 'EventVolunteers',
-        foreignKey: 'charity_event_id',
+      CharityEvent.hasMany(models.EventTimes, {
+        foreignKey: 'charity_event_id'
       });
+      CharityEvent.associate = (models) => {
+        CharityEvent.belongsTo(models.User, {
+        foreignKey: 'charity_id'
+        });
+      };
     };
 
   return CharityEvent;
