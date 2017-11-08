@@ -9,11 +9,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      charity_event_id:{
+      event_time_id:{
         type:Sequelize.INTEGER,
         allowNull:false,
         references:{
-          model:'CharityEvents',//plural required here
+          model:'EventTimes',//plural required here
           key:'id'
         },
         onUpdate:'cascade',
@@ -28,22 +28,6 @@ module.exports = {
         },
         onUpdate:'cascade',
         onDelete:'cascade'
-      },
-      time: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      position: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      status: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN
-      },
-      vols_needed: {
-        allowNull: true,
-        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: true,
