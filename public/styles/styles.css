@@ -53,3 +53,11 @@ body {
  .isHidden {
      display: none;
  }
+
+ .whiteOut {
+     color: white;
+ }
+
+ .blackOut {
+     color: black;
+ }

@@ -9,10 +9,11 @@ const { getCharityVols, viewCharity, updateCharityVol, postEvent, updateEvent, d
 // router.get('/charity/:id', getCharityVols);
 // router.patch('/charity/:id', updateCharityVol);
 router.post('/user-details/event', postEvent, getUserDetails);
-router.put('/user-details/event', updateEvent);
-router.delete('/user-details/event', deleteEvent);
+router.put('/user-details/event', updateEvent, getUserDetails);
+router.delete('/user-details/event', deleteEvent, getUserDetails);
 router.post('/user-details/time', postEventTime, getUserDetails);
-// router.delete('/charity/:id', deleteEventTime);
+router.delete('/user-details/time', deleteEventTime, getUserDetails);
+router.delete('/user-details/eventVol', deleteEventTime, getUserDetails);
 // router.get('/charity/:id', getCharityEvents);
 
 //VOLUNTEER
@@ -26,7 +27,7 @@ router.post('/charity-view/time', addEventVolunteer);//approval??
 //BOTH
 router.get('/user-details', getUserDetails);
 router.delete('/user-details', deleteUser);
-router.put('/user-details', editUser);
+router.put('/user-details', editUser, getUserDetails);
 // router.delete('/charity/:id', deleteVolFromEvent);
 // router.delete('/charity/:id', removeCharityFromUser);
 // router.get('/charity/:id', getEventDetails);//including volunteers but only show these in the charity's view

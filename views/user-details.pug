@@ -19,12 +19,13 @@ block content
             button(type="button" data-toggle="modal" data-target="#addEvent") +
             ul Events
                 each event in entity.CharityEvents
-                    li: a(data-toggle="modal" data-target="#viewEvent" data-id= event.id)  #{event.name} #{event.id}
+                    li: a(data-toggle="modal" data-target="#viewEvent" data-id= event.id)  #{event.name}
             
             //- ul times
-                each time in EventVolunteers
+            //-     each event in entity.CharityEvents
+            //-         each  in EventVolunteers
 
-                    li #{time.volunteer_id}
+            //-         li #{time.volunteer_id}
                 
                         //- form(method='POST' action='user?_method=DELETE')
                         //-     input(type='hidden', name='id',  value=`${payment.dataValues.id}`)
@@ -88,10 +89,13 @@ block content
                 div(class="modal-body")
                     p Event Details
                     each event in event1
+                        input(type='hidden', name='eventId'  value=event.id)
+                        -var n = 1
+                        - let date = (event.date).toString().substring(0, 15)
                         div.isHidden.modalEvent(class="event-"+event.id)
                             p #{event.name}
                             <br>
-                            p #{event.dataValues.date}
+                            p #{date}
                             <br>
                             p #{event.dataValues.street_address}
                             <br>
@@ -100,6 +104,9 @@ block content
                             p #{event.dataValues.description}
                             <br>
                             if session.passport.user.user_type===true
+                                button(type="button" data-toggle="modal" data-target="#editEvent" data-id=event.id) Edit Event
+                                <br>
+                                button(type="button" data-toggle="modal" data-target="#deleteEvent" data-id=event.id) Delete Event
                                 form.addTime(action="/user-details/time", method="POST")
                                     input(type="text" placeholder="time" name="time")
                                     <br>
@@ -107,12 +114,36 @@ block content
                                     <br>
                                     input(type="hidden" name="eventId" value=event.dataValues.id )
                                     button(type="submit") Add Time
-                            each time in eventTimes
-                                if event.id===time.dataValues.charity_event_id
-                                        li  #{time.dataValues.time} #{time.dataValues.position}
-                            button(type="button" data-toggle="modal" data-target="#editEvent" data-id=event.id) Edit Event
-                            <br>
-                            button(type="button" data-toggle="modal" data-target="#deleteEvent" data-id=event.id) Delete Event
+                                each time in eventTimes
+                                    if event.id===time.dataValues.charity_event_id
+                                        each name in volName
+                                            if time.id===name.event_time_id
+                                                p: input(type="hidden" name="eventTimeId" value=time.dataValues.id )  
+                                                p #{time.dataValues.time} #{time.dataValues.position} #{name.first_name} #{name.last_name} #{name.event_vol_id}
+                                                    form(action="/user-details/time?_method=DELETE", method="POST")
+                                                        input(type="hidden" name="timeId" value=time.dataValues.id )
+                                                        button(type="submit") Delete Time
+                                                    form(action="/user-details/eventVol?_method=DELETE", method="POST")
+                                                        input(type="hidden" name="eventVolId" value=name.event_vol_id )
+                                                        button(type="submit") Remove Volunteer
+                                            else if name.event_time_id===null && event.id===name.charity_event_id && time.dataValues.time===name.time
+                                                p #{name.time} #{name.position}
+                                                    form(action="/user-details/time?_method=DELETE", method="POST")
+                                                        input(type="hidden" name="timeId" value=time.dataValues.id )
+                                                        button(type="submit") Delete Time
+
+                            else
+                                each name in nonprofitName
+                                    if event.charity_id===name.id
+                                        while n < 2
+                                            li.whiteOut= n++
+                                                p.blackOut #{name.name}
+                                each time in userTimes
+                                    if event.id===time.charity_event_id
+                                            li  #{time.time} #{time.position}
+                                                form(action="/user-details/time?_method=DELETE", method="POST")
+                                                    input(type="hidden" name="timeId" value=time.id )
+                                                    button(type="submit") Delete Time
                 div(class="modal-footer")
                     button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
 
@@ -187,7 +218,7 @@ block content
                 div(class="modal-body")
                     p Are you sure you want to delete your account?
                     form(action="/user-details?_method=DELETE", method="POST")
-                        input(type="hidden" value=session.passport.user.id)
+                        input(type="hidden" name="userId" value=session.passport.user.id)
                         button(type="submit") Submit
                 div(class="modal-footer")
                     button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
@@ -212,7 +243,7 @@ block content
                                 <br>
                                 input(type="text" value=event.description name="description")
                                 <br>
-                                input(type="date" value=event.date name="date")
+                                //- input(type="date" value=event.date name="date")
                                 <br>
                                 button(type="submit") Submit
                 div(class="modal-footer")
@@ -226,7 +257,7 @@ block content
                     each event in event1
                         div.isHidden.modalEvent(class="event-"+event.id)
                             form(action="/user-details/event?_method=DELETE", method="POST")
-                                input(type="hidden" value=event.id)
+                                input(type="hidden" name="eventId" value=event.id)
                                 button(type="submit") Submit
                 div(class="modal-footer")
                     button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel

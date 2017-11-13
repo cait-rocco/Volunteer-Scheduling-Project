@@ -4,9 +4,33 @@ block content
 
     h3 #{entity.name}
     
+    //- each vol in entity.charity
+        if vol.id === session.passport.user.id 
     form(action="/charity-view", method="POST")
         input(type="hidden" placeholder="charity_id" name="charity_id" value=entity.id)
         button(type="submit") Follow this organization
+        //- else if entity.id && entity.status===null
+            form(action="/charity-view/DELETE", method="POST")
+                input(type="hidden" name="charity_id" value=entity.id)
+                button(type="submit") Unfollow this organization
+            button(type="submit") Download Volunteer Application
+            form(action="/charity-view/PUT", method="POST")
+                input(type="hidden" name="charity_id" value=entity.id)
+                input(type="hidden" name="application" value=entity.application)
+                button(type="submit") Submit Volunteer Application
+        //- else if record exists in charityVolunteer and status is pending
+            form(action="/charity-view/PUT", method="POST")
+                input(type="hidden" placeholder="charity_id" name="charity_id" value=entity.id)
+                input(type="hidden" name="status" value=null)
+                input(type="hidden" name="application" value=null)
+                if status is pending
+                    button(type="submit") Cancel Application
+                else if status is approved
+                    button(type="submit") Unvolunteer
+
+    //- h1 Volunteers
+    each vol in entity.volunteer
+        li #{vol.id} #{vol.charity_id}
 
 
     h4 #{entity.description}<br><br> #{entity.donation_link}
@@ -21,10 +45,11 @@ block content
                 div(class="modal-body")
                     p Event Details
                     each event in entity.CharityEvents
+                        - let date = (event.date).toString().substring(0, 15)
                         div.isHidden.modalEvent(class="event-"+event.id)
                             p #{event.name}
                             <br>
-                            p #{event.date}
+                            p #{date}
                             <br>
                             p #{event.street_address}
                             <br>

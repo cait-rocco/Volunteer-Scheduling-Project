@@ -2,16 +2,13 @@
 
 //CHARITIES
 // updateCharityVol
-// updateEvent
-// deleteEvent
-// deleteEventTime
 
 //BOTH
 // deleteVolFromEvent
 // removeCharityFromUser
 
 // ?
-// getEventDetails //including volunteers but only show these in the charity's view
+// getEventVolunteers //including volunteers but only show these in the charity's view
 // getVolDetails
 
 module.exports.getUserDetails = (req, res, next) => {
@@ -27,7 +24,6 @@ module.exports.getUserDetails = (req, res, next) => {
         }
       }) 
     .then( (user) => {
-        console.log("user", user)
         let entity = user[0].dataValues
         EventTimes.findAll()
         .then( (eventTimes) => {
@@ -35,7 +31,20 @@ module.exports.getUserDetails = (req, res, next) => {
             .then((event1) => {
                 User.findAll()
                 .then((volunteer) => {
-                    res.render('user-details', { entity, eventTimes, event1, volunteer });
+                    getUserTimes(req, next)
+                        .then((UT) => {
+                            let userTimes = UT[0]
+                            getNonprofitName(req, next)
+                                .then((NN) =>{
+                                    let nonprofitName = NN[0]
+                                    getVolName(req, next)
+                                        .then((VN) => {
+                                            let volName = VN[0]
+                                            console.log("volname", volName)
+                                            res.render('user-details', { entity, eventTimes, event1, volunteer, userTimes, nonprofitName, volName });
+                                        })
+                                })
+                        })
                 })
             })
         });
@@ -43,6 +52,40 @@ module.exports.getUserDetails = (req, res, next) => {
     .catch( (err) => {
       next(err); 
     });
+  };
+
+  const getUserTimes = (req, next) => {
+    const { sequelize } = req.app.get("models");
+    return sequelize.query(
+      `SELECT * FROM "EventVolunteers"
+      LEFT JOIN "Users"
+      ON "Users".id = "EventVolunteers".volunteer_id
+      LEFT JOIN "EventTimes"
+      ON "EventTimes".id = "EventVolunteers".event_time_id
+      LEFT JOIN "CharityEvents"
+      ON "CharityEvents".id = "EventTimes".charity_event_id
+      WHERE "Users".id =${req.session.passport.user.id}`
+    );
+  };
+
+  const getNonprofitName = (req, next) => {
+    const { sequelize } = req.app.get("models");
+    return sequelize.query(
+      `SELECT * FROM "CharityEvents"
+      LEFT JOIN "Users"
+      ON "CharityEvents".charity_id = "Users".id`
+    );
+  };
+
+  const getVolName = (req, next) => {
+    const { sequelize } = req.app.get("models");
+    return sequelize.query(
+      `SELECT "EventVolunteers".id AS "event_vol_id", "EventVolunteers".event_time_id, "EventVolunteers".volunteer_id, "EventTimes".charity_event_id, "EventTimes".time, "EventTimes".position, "Users".first_name, "Users".last_name, "Users".id FROM "EventTimes"
+      LEFT JOIN "EventVolunteers"
+      ON "EventVolunteers".event_time_id = "EventTimes".id
+      LEFT JOIN "Users"
+      ON "EventVolunteers".volunteer_id = "Users".id`
+    );
   };
 
   module.exports.postEvent = (req, res, next) => {
@@ -202,7 +245,7 @@ module.exports.editUser = (req, res, next) => {
         zip: req.body.zip,
         description: req.body.description
     }, {where:{id: req.body.id}}).then(function(event){
-    //   res.status(200).send();
+      res.status(200).send();
       res.redirect(`/user-details`);
     })
     .catch( (err) => {
@@ -214,7 +257,7 @@ module.exports.editUser = (req, res, next) => {
     const { CharityEvent } = req.app.get('models');
     CharityEvent.destroy({
       where: {
-        id: req.body.id,
+        id: req.body.eventId,
       }
     })
     .then((result) => {
@@ -226,10 +269,34 @@ module.exports.editUser = (req, res, next) => {
     const { User } = req.app.get('models');
     User.destroy({
       where: {
-        id: req.session.passport.user.id,
+        id: req.body.userId,
       }
     })
     .then((result) => {
       res.redirect('/');
+    })
+  }
+
+  module.exports.deleteEventTime = (req, res, next) => {
+    const { EventTimes } = req.app.get('models');
+    EventTimes.destroy({
+      where: {
+        id: req.body.timeId,
+      }
+    })
+    .then((result) => {
+      res.redirect('/user-details');
+    })
+  }
+
+  module.exports.deleteEventVol = (req, res, next) => {
+    const { EventVolunteer } = req.app.get('models');
+    EventVolunteer.destroy({
+      where: {
+        id: req.body.eventVolId,
+      }
+    })
+    .then((result) => {
+      res.redirect('/user-details');
     })
   }
