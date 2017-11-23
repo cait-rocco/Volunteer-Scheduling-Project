@@ -54,6 +54,16 @@ module.exports.getUserDetails = (req, res, next) => {
     });
   };
 
+  const getCharityVols = (req, next) => {
+    const { sequelize } = req.app.get("models");
+    return sequelize.query(
+      `SELECT "Users".id AS "session_id", "CharityVolunteers".id AS "charVolId", "CharityVolunteers".status, "CharityVolunteers".volunteer_id, "CharityVolunteers".application, "CharityVolunteers".charity_id FROM "Users"
+      LEFT JOIN "CharityVolunteers"
+      ON "Users".id = "CharityVolunteers".volunteer_id
+      WHERE "CharityVolunteers".volunteer_id = ${req.session.passport.user.id}`
+    );
+  };
+
   const getUserTimes = (req, next) => {
     const { sequelize } = req.app.get("models");
     return sequelize.query(
@@ -172,7 +182,12 @@ module.exports.getUserDetails = (req, res, next) => {
         let entity = user[0].dataValues
         EventTimes.findAll()
         .then( (eventTimes) => {
-            res.render('charity-view', { entity, eventTimes });
+            getCharityVols(req, next)
+                .then((CV) => {
+                    let charityVols = CV[0]
+                    console.log("charity vols", charityVols)
+                    res.render('charity-view', { entity, eventTimes, charityVols });
+                })
         });
     })
     .catch( (err) => {
@@ -289,14 +304,17 @@ module.exports.editUser = (req, res, next) => {
     })
   }
 
-  module.exports.deleteEventVol = (req, res, next) => {
-    const { EventVolunteer } = req.app.get('models');
-    EventVolunteer.destroy({
-      where: {
-        id: req.body.eventVolId,
-      }
-    })
-    .then((result) => {
-      res.redirect('/user-details');
-    })
-  }
+  module.exports.deleteVolFromEvent = (req, res, next) => {
+      const { sequelize } = req.app.get('models');
+      sequelize
+        .query(`DELETE FROM "EventVolunteers" WHERE "id"=${req.body.eventVolId}`, {
+          type: sequelize.QueryTypes.DELETE
+        })
+        .then(() => {
+          res.redirect('back');
+        })
+        .catch(err => {
+          next(err);
+        });
+    
+  };

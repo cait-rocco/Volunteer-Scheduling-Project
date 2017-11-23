@@ -21,22 +21,9 @@ block content
                 each event in entity.CharityEvents
                     li: a(data-toggle="modal" data-target="#viewEvent" data-id= event.id)  #{event.name}
             
-            //- ul times
-            //-     each event in entity.CharityEvents
-            //-         each  in EventVolunteers
-
-            //-         li #{time.volunteer_id}
-                
-                        //- form(method='POST' action='user?_method=DELETE')
-                        //-     input(type='hidden', name='id',  value=`${payment.dataValues.id}`)
-                        //-     button(type='submit') X
-            
             ul Volunteers
                 each volunteer in entity.charity
-                    li: a(data-toggle="modal" data-target="#viewVol" data-id= volunteer.id) #{volunteer.dataValues.first_name} #{volunteer.dataValues.last_name}
-            
-
-
+                    li: a(data-toggle="modal" data-target="#viewVol" data-id= volunteer.id) #{volunteer.dataValues.first_name} #{volunteer.dataValues.last_name} #{volunteer.id}
             
         else
             p #{entity.first_name} #{entity.last_name}
@@ -119,10 +106,7 @@ block content
                                         each name in volName
                                             if time.id===name.event_time_id
                                                 p: input(type="hidden" name="eventTimeId" value=time.dataValues.id )  
-                                                p #{time.dataValues.time} #{time.dataValues.position} #{name.first_name} #{name.last_name} #{name.event_vol_id}
-                                                    form(action="/user-details/time?_method=DELETE", method="POST")
-                                                        input(type="hidden" name="timeId" value=time.dataValues.id )
-                                                        button(type="submit") Delete Time
+                                                p #{time.dataValues.time} #{time.dataValues.position} #{name.first_name} #{name.last_name}
                                                     form(action="/user-details/eventVol?_method=DELETE", method="POST")
                                                         input(type="hidden" name="eventVolId" value=name.event_vol_id )
                                                         button(type="submit") Remove Volunteer
@@ -141,9 +125,9 @@ block content
                                 each time in userTimes
                                     if event.id===time.charity_event_id
                                             li  #{time.time} #{time.position}
-                                                form(action="/user-details/time?_method=DELETE", method="POST")
+                                                form(action="/user-details/eventVol?_method=DELETE", method="POST")
                                                     input(type="hidden" name="timeId" value=time.id )
-                                                    button(type="submit") Delete Time
+                                                    button(type="submit") Unvolunteer
                 div(class="modal-footer")
                     button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
 
@@ -153,21 +137,26 @@ block content
                 div(class="modal-body")
                     p Volunteer Details
                     each volunteer in entity.charity
-                        div.isHidden.modalEvent(class="event-"+volunteer.id)
+                        input(type="hidden" name="volunteerId" value=volunteer.id )
+                        div.isHidden.modalEvent(class="volunteer-"+volunteer.id)
                             p #{volunteer.first_name} #{volunteer.dataValues.last_name}
                             <br>
-                        //- each vol in CharityVolunteer
-                            if volunteer.id===vol.id
-                                p Status: #{vol.status}
-                                p View Application Link
-                                p #{vol.application}
-                    p Events Volunteer is signed up for
-                    each event in event1
-                        each time in eventTimes
-                            if event.charity_id===session.passport.user.id && event.id===time.charity_event_id
-                                li  #{event.name} #{time.dataValues.time} #{time.dataValues.position} #{time.volunteer_id}
-                    //- p #{volunteer.dataValues.status}
-                    <br>    
+                            //- each vol in CharityVolunteer
+                                if volunteer.id===vol.id
+                                    p Status: #{vol.status}
+                                    p View Application Link
+                                    p #{vol.application}
+                            p Events Volunteer is signed up for
+                                each name in volName
+                                    if name.volunteer_id===volunteer.id
+                                        each event in event1
+                                            if event.charity_id===session.passport.user.id && name.charity_event_id===event.id
+                                                li #{event.name} #{name.time} #{name.position}  
+                                                    form(action="/user-details/eventVol?_method=DELETE", method="POST")
+                                                        input(type="hidden" name="eventVolId" value=name.event_vol_id )
+                                                        button(type="submit") Remove Volunteer
+                                    //- else if name.volunteer!==volunteer.id
+                                        p nope
                 div(class="modal-footer")
                     button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
 

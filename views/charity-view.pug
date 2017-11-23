@@ -2,14 +2,17 @@ extends index.pug
 
 block content
 
-    h3 #{entity.name}
+    h3 #{entity.name} #{entity.id}
+    -var test = entity.id
+    h2 #{test}
     
-    //- each vol in entity.charity
-        if vol.id === session.passport.user.id 
-    form(action="/charity-view", method="POST")
-        input(type="hidden" placeholder="charity_id" name="charity_id" value=entity.id)
-        button(type="submit") Follow this organization
-        //- else if entity.id && entity.status===null
+    for vol in charityVols
+        if vol.status===null && vol.charity_id!==entity.id
+            p charityVols Id: #{vol.volunteer_id} session Id: #{session.passport.user.id} status: #{vol.status} charity vol-vol id: #{vol.charity_id} entity id: #{entity.id}
+            form(action="/charity-view", method="POST")
+                input(type="hidden" placeholder="charity_id" name="charity_id" value=entity.id)
+                button(type="submit") Follow this organization
+        else if vol.status===null && vol.charity_id===entity.id
             form(action="/charity-view/DELETE", method="POST")
                 input(type="hidden" name="charity_id" value=entity.id)
                 button(type="submit") Unfollow this organization
@@ -27,10 +30,6 @@ block content
                     button(type="submit") Cancel Application
                 else if status is approved
                     button(type="submit") Unvolunteer
-
-    //- h1 Volunteers
-    each vol in entity.volunteer
-        li #{vol.id} #{vol.charity_id}
 
 
     h4 #{entity.description}<br><br> #{entity.donation_link}

@@ -13,7 +13,7 @@ router.put('/user-details/event', updateEvent, getUserDetails);
 router.delete('/user-details/event', deleteEvent, getUserDetails);
 router.post('/user-details/time', postEventTime, getUserDetails);
 router.delete('/user-details/time', deleteEventTime, getUserDetails);
-router.delete('/user-details/eventVol', deleteEventTime, getUserDetails);
+router.delete('/user-details/eventVol', deleteVolFromEvent, getUserDetails);
 // router.get('/charity/:id', getCharityEvents);
 
 //VOLUNTEER
