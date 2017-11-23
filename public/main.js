@@ -37,7 +37,7 @@ $('#viewEvent').on('show.bs.modal', function (event) {
     var link = $(volunteer.relatedTarget)
     var recipient = link.data('id') 
     var modal = $(this)
-    $(".event-"+recipient).removeClass("isHidden")
+    $(".volunteer-"+recipient).removeClass("isHidden")
   })
   
   $('#viewVol').on('hidden.bs.modal', function (e) {
